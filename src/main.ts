@@ -6,17 +6,21 @@ import { ValidationPipe } from './pipes/validation.pipe';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
-  const swaggerConfig = new DocumentBuilder()
-    .setTitle('Relearn Nest')
-    .setDescription('This is an effort to revise NestJS Concepts.')
-    .setVersion('1.0')
-    .build();
+  (function configureSwaggerModule(app) {
+    const swaggerConfig = new DocumentBuilder()
+      .setTitle('Relearn Nest')
+      .setDescription('This is an effort to revise NestJS Concepts.')
+      .setVersion('1.0')
+      .build();
 
-  const swaggerDocument = SwaggerModule.createDocument(app, swaggerConfig);
+    const swaggerDocument = SwaggerModule.createDocument(app, swaggerConfig);
 
-  SwaggerModule.setup('api', app, swaggerDocument);
+    SwaggerModule.setup('api', app, swaggerDocument);
+  })(app);
 
-  app.useGlobalPipes(new ValidationPipe());
+  (function configureValidation(app) {
+    app.useGlobalPipes(new ValidationPipe());
+  })(app);
 
   await app.listen(3000);
 }
