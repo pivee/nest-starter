@@ -15,7 +15,15 @@ export class ProductService {
     return product;
   }
 
-  async findAll() {
+  async findAll({
+    limit,
+    offset,
+  }: {
+    limit?: number;
+    offset?: number;
+  } = {}) {
+    // TODO: Implement limit and offset
+    console.log('limit, offset', limit, offset);
     return await this.collection;
   }
 
