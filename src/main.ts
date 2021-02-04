@@ -2,6 +2,7 @@ import { ClassSerializerInterceptor } from '@nestjs/common';
 import { NestFactory, Reflector } from '@nestjs/core';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { AppModule } from './app.module';
+import { HttpExceptionFilter } from './filters/http-exception.filter';
 import { ValidationPipe } from './pipes/validation.pipe';
 
 async function bootstrap() {
@@ -27,6 +28,10 @@ async function bootstrap() {
     app.useGlobalInterceptors(
       new ClassSerializerInterceptor(app.get(Reflector)),
     );
+  })(app);
+
+  (function configureHttpExceptionFilter(app) {
+    app.useGlobalFilters(new HttpExceptionFilter());
   })(app);
 
   await app.listen(3000);
